@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sunshine Password Reset</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e1e;
+      color: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 2rem;
+    }
+    label, input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: #00aa00;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #2a2a2a;
+      border-radius: 5px;
+    }
+    code {
+      background: #333;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Sunshine Password Reset Tool</h2>
+  <p>Set a new <strong>username</strong> and <strong>password</strong> for Sunshine.</p>
+
+  <label>Username:</label>
+  <input type="text" id="username" placeholder="e.g. admin">
+
+  <label>Password:</label>
+  <input type="password" id="password" placeholder="New password">
+
+  <button onclick="generate()">Generate & Download</button>
+
+  <div class="output" id="result" style="display: none;"></div>
+
+  <script>
+    async function generate() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const result = document.getElementById("result");
+
+      if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+      }
+
+      const salt = Array.from(crypto.getRandomValues(new Uint8Array(8)))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('').toUpperCase();
+
+      const text = new TextEncoder().encode(salt + password);
+      const buffer = await crypto.subtle.digest("SHA-256", text);
+      const hash = Array.from(new Uint8Array(buffer))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+
+      const json = {
+        username: username,
+        salt: salt,
+        password: hash
+      };
+
+      const jsonString = JSON.stringify(json, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      // Trigger download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "config.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Show result + help
+      result.style.display = "block";
+      result.innerHTML = `
+        <p><strong>config.json downloaded!</strong></p>
+        <p><strong>1.</strong> Find the downloaded file (probably in your Downloads folder).</p>
+        <p><strong>2.</strong> Replace your old config.json:</p>
+        <ul>
+          <li><code>~/.config/sunshine/</code> on Linux</li>
+          <li><code>%APPDATA%\\sunshine\\</code> on Windows</li>
+        </ul>
+        <p><strong>3.</strong> Open Sunshine — it will now ask for your new login info.</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
