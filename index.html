@@ -6,42 +6,87 @@
   <style>
     body {
       font-family: sans-serif;
-      background: #1e1e1e;
       color: white;
+      background: url('https://www.w3schools.com/w3images/mountains.jpg') no-repeat center center fixed;
+      background-size: cover;
       max-width: 500px;
       margin: auto;
       padding: 2rem;
+      overflow: hidden;
     }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+
     label, input {
       display: block;
       width: 100%;
       margin-bottom: 1rem;
       font-size: 1rem;
     }
+
     input {
-      padding: 0.5rem;
+      padding: 0.8rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+      box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
     }
+
+    input:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
     button {
-      background: #00aa00;
+      background: rgba(0, 0, 0, 0.7);  /* Dark background */
       color: white;
       border: none;
       padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border-radius: 5px;
+      font-size: 1.2rem;
+      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      margin-top: 1rem;
     }
+
+    button:hover {
+      background: #5D3F8E;  /* Dark purple background on hover */
+      transform: scale(1.1);  /* Enlarges the button on hover */
+    }
+
     .output {
       margin-top: 2rem;
       padding: 1rem;
-      background: #2a2a2a;
-      border-radius: 5px;
+      background: rgba(40, 40, 40, 0.8);
+      border-radius: 10px;
     }
+
     code {
       background: #333;
       padding: 0.2rem 0.4rem;
       border-radius: 3px;
+    }
+
+    #tutorial {
+      background: rgba(40, 40, 40, 0.7);
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 10px;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #tutorial.active {
+      display: block;
+      opacity: 1;
     }
   </style>
 </head>
@@ -56,9 +101,23 @@
   <label>Password:</label>
   <input type="password" id="password" placeholder="New password">
 
-  <button onclick="generate()">Generate & Download</button>
+  <button onclick="generate()">Create</button>
+  <button onclick="toggleTutorial()">Show Tutorial</button>
 
   <div class="output" id="result" style="display: none;"></div>
+
+  <div id="tutorial">
+    <h3>How to Use:</h3>
+    <p><strong>1.</strong> Enter your desired <strong>username</strong> and <strong>password</strong>.</p>
+    <p><strong>2.</strong> Click <strong>Create</strong>.</p>
+    <p><strong>3.</strong> Find the downloaded <code>config.json</code> file.</p>
+    <p><strong>4.</strong> Replace the old <code>config.json</code> with the new one:</p>
+    <ul>
+      <li><code>~/.config/sunshine/</code> on Linux</li>
+      <li><code>%APPDATA%\\sunshine\\</code> on Windows</li>
+    </ul>
+    <p><strong>5.</strong> Open Sunshine — it will now ask for your new login info.</p>
+  </div>
 
   <script>
     async function generate() {
@@ -110,8 +169,12 @@
           <li><code>~/.config/sunshine/</code> on Linux</li>
           <li><code>%APPDATA%\\sunshine\\</code> on Windows</li>
         </ul>
-        <p><strong>3.</strong> Open Sunshine — it will now ask for your new login info.</p>
       `;
+    }
+
+    function toggleTutorial() {
+      const tutorial = document.getElementById("tutorial");
+      tutorial.classList.toggle("active");
     }
   </script>
 
