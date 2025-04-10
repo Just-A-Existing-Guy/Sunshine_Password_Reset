@@ -130,10 +130,10 @@
     <h3>How to Use:</h3>
     <p><strong>1.</strong> Enter your desired <strong>username</strong> and <strong>password</strong>.</p>
     <p><strong>2.</strong> Click <strong>Create</strong>.</p>
-    <p><strong>3.</strong> Find the downloaded <code>config.json</code> file.</p>
-    <p><strong>4.</strong> Replace the old <code>config.json</code> with the new one:</p>
+    <p><strong>3.</strong> Find the downloaded <code>sunshine_state.json</code> file.</p>
+    <p><strong>4.</strong> Replace the old <code>sunshine_state.json</code> with the new one:</p>
     <ul>
-      <li><code>~/.config/sunshine/</code> on Linux</li>
+      <li><code>~/.sunshine_state/sunshine/</code> on Linux</li>
       <li><code>%APPDATA%\\sunshine\\</code> on Windows</li>
     </ul>
     <p><strong>5.</strong> Open Sunshine — it will now ask for your new login info.</p>
@@ -177,7 +177,7 @@
       // Trigger download
       const a = document.createElement("a");
       a.href = url;
-      a.download = "config.json";
+      a.download = "sunshine_state.json";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -186,11 +186,11 @@
       // Show result + help
       result.style.display = "block";
       result.innerHTML = `
-        <p><strong>config.json downloaded!</strong></p>
+        <p><strong>sunshine_state.json downloaded!</strong></p>
         <p><strong>1.</strong> Find the downloaded file (probably in your Downloads folder).</p>
-        <p><strong>2.</strong> Replace your old config.json:</p>
+        <p><strong>2.</strong> Replace your old sunshine_state.json:</p>
         <ul>
-          <li><code>~/.config/sunshine/</code> on Linux</li>
+          <li><code>~/.sunshine_state/sunshine/</code> on Linux</li>
           <li><code>%APPDATA%\\sunshine\\</code> on Windows</li>
         </ul>
       `;
